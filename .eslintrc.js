@@ -15,5 +15,7 @@ module.exports = {
     'linebreak-style': 'off',
     'consistent-return': 'off',
     'no-promise-executor-return': 'off',
+    camelcase: 'off',
+
   },
 };
