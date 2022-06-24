@@ -1,4 +1,5 @@
 const ContactsRepository = require('../repositories/ContactsRepository');
+require('express-async-errors');
 
 class ContactController {
   async index(request, response) {
