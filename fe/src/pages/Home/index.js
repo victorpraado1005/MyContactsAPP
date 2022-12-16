@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  Container, Header, ListContainer, Card, InputSearchContainer,
+  Container, Header, ListHeader, Card, InputSearchContainer,
 } from './style';
 
 import arrow from '../../assets/images/icons/arrow.svg';
@@ -11,14 +11,23 @@ import trash from '../../assets/images/icons/trash.svg';
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
+  const [orderBy, setOrderBy] = useState('asc');
 
   useEffect(() => {
-    fetch('http://localhost:3001/contacts')
+    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json();
         setContacts(json);
       });
-  }, []);
+  }, [orderBy]);
+
+  function handleToggleOrderBy() {
+    setOrderBy(
+      (prevState) => (prevState === 'asc' ? 'desc' : 'asc'),
+    );
+  }
+
+  console.log(orderBy);
 
   return (
     <Container>
@@ -32,14 +41,14 @@ export default function Home() {
         </strong>
         <Link to="/new">Novo contato</Link>
       </Header>
-      <ListContainer>
-        <header>
-          <button type="button" className="sort-button">
-            <span>Nome</span>
-            <img src={arrow} alt="Arrow" />
-          </button>
-        </header>
-      </ListContainer>
+
+      <ListHeader orderBy={orderBy}>
+        <button type="button" className="sort-button" onClick={handleToggleOrderBy}>
+          <span>Nome</span>
+          <img src={arrow} alt="Arrow" />
+        </button>
+      </ListHeader>
+
       {contacts.map((contact) => (
         <Card key={contact.id}>
           <div className="info">
