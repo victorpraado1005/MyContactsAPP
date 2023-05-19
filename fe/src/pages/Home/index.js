@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import {
   useEffect, useState, useMemo, useCallback,
 } from 'react';
@@ -5,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import {
   Container, Header, ListHeader, Card, InputSearchContainer, ErrorContainer, EmptyListContainer,
+  SearchNotFoundContainer,
 } from './style';
 
 import arrow from '../../assets/images/icons/arrow.svg';
@@ -12,6 +14,7 @@ import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
 import sad from '../../assets/images/sad.svg';
 import emptyBox from '../../assets/images/empty-box.svg';
+import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 import Loader from '../../components/Loader';
 import Button from '../../components/button';
@@ -110,7 +113,6 @@ export default function Home() {
       )}
       {!hasError && (
         <>
-
           {(contacts.length < 1 && !isLoading) && (
             <EmptyListContainer>
               <img src={emptyBox} alt="Empty Box" />
@@ -123,15 +125,23 @@ export default function Home() {
             </EmptyListContainer>
           )}
 
-          <ListHeader orderBy={orderBy}>
-            {filteredContacts.length > 0 && (
+          {(contacts.length > 0 && filteredContacts.length < 1) && (
+            <SearchNotFoundContainer>
+              <img src={magnifierQuestion} alt="Não encontrado" />
+              <span>
+                Nenhum resultado foi encontrado para <strong>{searchTerm}</strong>.
+              </span>
+            </SearchNotFoundContainer>
+          )}
+
+          {filteredContacts.length > 0 && (
+            <ListHeader orderBy={orderBy}>
               <button type="button" className="sort-button" onClick={handleToggleOrderBy}>
                 <span>Nome</span>
                 <img src={arrow} alt="Arrow" />
               </button>
-            )}
-
-          </ListHeader>
+            </ListHeader>
+          )}
           {
             filteredContacts.map((contact) => (
               <Card key={contact.id}>
