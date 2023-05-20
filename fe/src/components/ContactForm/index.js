@@ -28,9 +28,11 @@ export default function ContactForm({ buttonLabel }) {
 
   useEffect(() => {
     async function loadCategories() {
-      const CategoriesList = await CategoriesService.listCategories();
+      try {
+        const CategoriesList = await CategoriesService.listCategories();
 
-      setCategories(CategoriesList);
+        setCategories(CategoriesList);
+      } catch {}
     }
 
     loadCategories();
